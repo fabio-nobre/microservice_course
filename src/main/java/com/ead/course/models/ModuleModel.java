@@ -2,11 +2,15 @@ package com.ead.course.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Data                                       // Lombok - Inserinddo gets, sets ... sem precisar cria-los
@@ -30,4 +34,24 @@ public class ModuleModel implements Serializable {
     @Column(nullable = false) // Coluna da tabela, obrigatorio
     private LocalDateTime creationDate;
 
+    /**
+     * - Relacionamentos
+     * - Cada módulo vai pertencer a um determinado curso
+     * - Módulo está vinculado a um determinado curso
+     *
+     * -  @ManyToOne: Vários módulos para um curso
+     * - optional = false: Existência obrigatória
+     *  fetch = FetchType.LAZY: Carregamento tardio. Executa consultas apenas se necessario
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private CourseModel course;
+
+    /**
+     * - @OneToMany: Um Modulo para vários Lessons
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "module", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
+    private Set<LessonModel> lessons;
 }

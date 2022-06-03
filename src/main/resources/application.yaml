@@ -7,7 +7,10 @@ spring:
   application:
     name: ead-course-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/eadcourse
+#    base com implementação utilizando comunicação sincrona
+#    url: jdbc:postgresql://localhost:5432/eadcourse
+#    base com implementação utilizando comunicação Assincrona
+    url: jdbc:postgresql://localhost:5432/eadcourse2
     username: postgres
     password: 1234
   jpa:

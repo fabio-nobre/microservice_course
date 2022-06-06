@@ -25,7 +25,8 @@ spring:
   output:
     ansi:
       enabled: Always
-
+  rabbitmq:
+    addresses: amqps://bygijfjz:dss9aHxJm43TdTU3omlJYVAzbWUK-pQC@stingray.rmq.cloudamqp.com/bygijfjz
 
 logging:
   level:

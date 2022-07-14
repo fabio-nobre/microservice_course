@@ -1,54 +1,10 @@
-server:
-  port: 8082
-  servlet:
-    context-path: '/ead-course/'
-
 spring:
   application:
-    name: ead-course-service
-  datasource:
-#    base com implementação utilizando comunicação sincrona
-#    url: jdbc:postgresql://localhost:5432/eadcourse
-#    base com implementação utilizando comunicação Assincrona
-    url: jdbc:postgresql://localhost:5432/eadcourse2
-    username: postgres
-    password: 1234
-  jpa:
-    hibernate:
-      ddl-auto: update
-      dialect: org.hibernate.dialect.PostgreSQLDialect
-      jdbc:
-        lob.non-contextual-creation: true
-    properties:
-      hibernate:
-        show_sql: true
-  output:
-    ansi:
-      enabled: Always
-  rabbitmq:
-    addresses: amqps://bygijfjz:dss9aHxJm43TdTU3omlJYVAzbWUK-pQC@stingray.rmq.cloudamqp.com/bygijfjz
-
-logging:
-  level:
-    com.ead: TRACE
-    root: INFO
-    org.springframework.web: DEBUG
-    org.hibernate: INFO
-
-ead:
-  api:
-    url:
-      authuser: 'http://ead-authuser-service/ead-authuser'
-  broker:
-    exchange:
-      userEventExchange: ead.userevent
-    queue:
-      userEventQueue:
-        name: ead.userevent.ms.course
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: 'http://localhost:8761/eureka'
-  instance:
-    hostname: localhost
+    name: ead-course-service          # Utilizar mesmo nome para config server .yaml
+  config:                               # configuração de conexão com config server
+    import: 'configserver:'
+  #    import: 'optional:configserver:'   # Utilizar a opção: optional para caso o config server estiver fora carregara as configurações locais do microservice
+  cloud:                                # Localizar o config server com a nomeclatura especifica
+    config:
+      discovery:
+        serviceId: ead-config-server

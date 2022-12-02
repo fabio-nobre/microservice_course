@@ -46,13 +46,13 @@ public class CourseValidator implements Validator {
     private void validateUserInstructor(UUID userInstructor, Errors errors){
         UUID currentUserId = authenticationCurrentUserService.getCurrentUser().getUserId();
         if(currentUserId.equals(userInstructor)) {
-        Optional<UserModel> userModelOptional = userService.findById(userInstructor);
-        if(!userModelOptional.isPresent()){
-            errors.rejectValue("userInstructor", "UserInstructorError", "Instructor not found.");
-        }
-        if(userModelOptional.get().getUserType().equals(UserType.STUDENT.toString())){
-            errors.rejectValue("userInstructor", "UserInstructorError", "User must be INSTRUCTOR or ADMIN.");
-        }
+            Optional<UserModel> userModelOptional = userService.findById(userInstructor);
+            if(!userModelOptional.isPresent()){
+                errors.rejectValue("userInstructor", "UserInstructorError", "Instructor not found.");
+            }
+            if(userModelOptional.get().getUserType().equals(UserType.STUDENT.toString())){
+                errors.rejectValue("userInstructor", "UserInstructorError", "User must be INSTRUCTOR or ADMIN.");
+            }
         } else {
             throw new AccessDeniedException("Forbidden");
         }
